@@ -6,6 +6,7 @@ interface CharacterStore {
   position: CharacterPosition;
   state: CharacterState;
   targetIslandId: IslandId | null;
+  setPosition: (x: number, y: number) => void;
   moveTo: (x: number, y: number) => void;
   startWorkspaceEntry: () => void;
   walkToIsland: (islandId: IslandId) => void;
@@ -25,6 +26,11 @@ export const useCharacterStore = create<CharacterStore>((set) => ({
   position: { x: 640, y: 620 },
   state: "idle",
   targetIslandId: null,
+  setPosition: (x, y) =>
+    set({
+      position: { x, y },
+      targetIslandId: null,
+    }),
   moveTo: (x, y) =>
     set({
       position: { x, y },
