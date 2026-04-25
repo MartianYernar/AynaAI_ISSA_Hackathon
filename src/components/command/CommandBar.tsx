@@ -1,4 +1,11 @@
-import { Brain, MessageCircle, MousePointer2, Route } from "lucide-react";
+import {
+  Brain,
+  Mic,
+  MousePointer2,
+  Paperclip,
+  Route,
+  Send,
+} from "lucide-react";
 import { useCharacterStore, useIslandStore } from "../../store";
 import type { CharacterState, IslandId } from "../../types";
 
@@ -20,21 +27,45 @@ export function CommandBar({ onOpenIsland }: CommandBarProps) {
 
   return (
     <div className="command-bar" aria-label="Ayna AI command bar">
-      <button onClick={() => onOpenIsland("roadmap")} type="button">
+      <button
+        aria-label="Upload portfolio evidence"
+        className="command-icon-button"
+        onClick={() => setCharacterState("thinking")}
+        type="button"
+      >
+        <Paperclip size={18} strokeWidth={1.8} />
+      </button>
+      <div className="command-input-shell">
+        <span>Ask Ayna to reflect on your next step</span>
+      </div>
+      <button
+        aria-label="Start voice input"
+        className="command-icon-button"
+        onClick={() => setCharacterState("speaking")}
+        type="button"
+      >
+        <Mic size={18} strokeWidth={1.8} />
+      </button>
+      <button
+        aria-label="Send command"
+        className="command-send-button"
+        onClick={() => onOpenIsland("roadmap")}
+        type="button"
+      >
+        <Send size={18} strokeWidth={1.8} />
+      </button>
+      <div className="command-divider" />
+      <button className="command-action" onClick={() => onOpenIsland("roadmap")} type="button">
         <Route size={17} strokeWidth={1.8} />
         <span>Roadmap</span>
       </button>
-      <button onClick={() => walkToIsland(activeIslandId)} type="button">
+      <button className="command-action" onClick={() => walkToIsland(activeIslandId)} type="button">
         <MousePointer2 size={17} strokeWidth={1.8} />
         <span>Visit active</span>
       </button>
-      <button onClick={() => setCharacterState("thinking")} type="button">
+      <button className="command-action" onClick={() => setCharacterState("thinking")} type="button">
         <Brain size={17} strokeWidth={1.8} />
         <span>Think</span>
-      </button>
-      <button onClick={() => setCharacterState("speaking")} type="button">
-        <MessageCircle size={17} strokeWidth={1.8} />
-        <span>Speak</span>
       </button>
       <div className="state-pills" aria-label="Character states">
         {characterStates.map((state) => (

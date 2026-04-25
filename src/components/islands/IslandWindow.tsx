@@ -1,4 +1,5 @@
-import { X } from "lucide-react";
+import { Minus, X } from "lucide-react";
+import { motion } from "framer-motion";
 import { Rnd, type RndDragCallback, type RndResizeCallback } from "react-rnd";
 import type { ReactNode } from "react";
 import type { IslandDefinition, IslandId } from "../../types";
@@ -56,23 +57,38 @@ export function IslandWindow({
       position={{ x: island.layout.x, y: island.layout.y }}
       size={{ width: island.layout.width, height: island.layout.height }}
     >
-      <article className="island-card">
+      <motion.article
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="island-card"
+        initial={{ opacity: 0, scale: 0.98, y: 10 }}
+        transition={{ duration: 0.22, ease: "easeOut" }}
+      >
         <header className="island-header">
           <div>
             <span>{island.eyebrow}</span>
             <h2>{island.title}</h2>
           </div>
-          <button
-            aria-label={`Close ${island.title}`}
-            className="icon-button"
-            onClick={() => onClose(island.id)}
-            type="button"
-          >
-            <X size={16} strokeWidth={1.8} />
-          </button>
+          <div className="island-controls" aria-label={`${island.title} controls`}>
+            <button
+              aria-label={`Focus ${island.title}`}
+              className="window-dot"
+              onClick={() => onFocus(island.id)}
+              type="button"
+            >
+              <Minus size={12} strokeWidth={1.8} />
+            </button>
+            <button
+              aria-label={`Close ${island.title}`}
+              className="window-dot"
+              onClick={() => onClose(island.id)}
+              type="button"
+            >
+              <X size={13} strokeWidth={1.8} />
+            </button>
+          </div>
         </header>
         {children}
-      </article>
+      </motion.article>
     </Rnd>
   );
 }

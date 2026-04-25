@@ -21,17 +21,20 @@ export function DesktopCharacter() {
       animate={{ left: position.x, top: position.y }}
       className={`desktop-character is-${characterState}`}
       initial={false}
-      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.92, ease: [0.16, 1, 0.3, 1] }}
     >
       <div className="character-shadow" />
-      <div className="character-body">
+      <div className="character-aura" />
+      <div className="character-body" aria-hidden="true">
         <div className="character-head">
+          <div className="character-hair" />
           <div className="character-face">
             <span />
             <span />
           </div>
         </div>
         <div className="character-torso">
+          <div className="character-collar" />
           <div className="character-arm character-arm-left" />
           <div className="character-arm character-arm-right" />
         </div>
