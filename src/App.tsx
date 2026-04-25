@@ -2,6 +2,7 @@ import { DesktopCharacter } from "./components/avatar";
 import { FullscreenScene } from "./components/camera";
 import { CommandBar } from "./components/command";
 import { IslandNav, IslandsLayer } from "./components/islands";
+import { WorkspacePlane } from "./components/scene/WorkspacePlane";
 import { useCharacterStore, useIslandStore } from "./store";
 import type { IslandId } from "./types";
 import { useState } from "react";
@@ -238,10 +239,12 @@ function App() {
 
   return (
     <FullscreenScene>
-      <IslandsLayer />
+      <WorkspacePlane>
+        <IslandsLayer />
+        <DesktopCharacter />
+      </WorkspacePlane>
       <IslandNav onOpenIsland={handleOpenIsland} />
       <CommandBar onOpenIsland={handleOpenIsland} />
-      <DesktopCharacter />
     </FullscreenScene>
   );
 }

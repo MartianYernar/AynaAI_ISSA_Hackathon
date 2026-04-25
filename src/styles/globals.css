@@ -395,6 +395,24 @@ button {
   z-index: 1;
 }
 
+.workspace-viewport {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  cursor: default;
+}
+
+.workspace-viewport.is-panning {
+  cursor: grabbing;
+}
+
+.workspace-plane {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
 .islands-layer {
   position: absolute;
   inset: 0;

@@ -6,7 +6,7 @@ export const islandDefinitions: IslandDefinition[] = [
     title: "Interest Map",
     eyebrow: "Signals",
     summary: "A compact view of what the student naturally gravitates toward.",
-    layout: { x: 64, y: 84, width: 330, height: 280 },
+    layout: { x: 96, y: 96, width: 280, height: 232 },
     content: [
       { label: "Strongest pull", value: "Human-centered technology" },
       { label: "Secondary theme", value: "Research, storytelling, systems" },
@@ -18,7 +18,7 @@ export const islandDefinitions: IslandDefinition[] = [
     title: "Achievements",
     eyebrow: "Evidence",
     summary: "Portfolio moments translated into visible strengths.",
-    layout: { x: 84, y: 400, width: 360, height: 260 },
+    layout: { x: 124, y: 368, width: 292, height: 226 },
     content: [
       { label: "Hackathon", value: "Built a prototype under a hard deadline" },
       { label: "Team role", value: "Frontend ownership and product polish" },
@@ -30,7 +30,7 @@ export const islandDefinitions: IslandDefinition[] = [
     title: "Roadmap",
     eyebrow: "Next 90 days",
     summary: "A pragmatic path from current skill to career-ready proof.",
-    layout: { x: 504, y: 112, width: 380, height: 320 },
+    layout: { x: 488, y: 112, width: 310, height: 260 },
     content: [
       { label: "Month 1", value: "Ship one complete React desktop flow" },
       { label: "Month 2", value: "Add Tauri APIs and local persistence" },
@@ -42,7 +42,7 @@ export const islandDefinitions: IslandDefinition[] = [
     title: "Career Match",
     eyebrow: "Fit",
     summary: "Roles that match interests, evidence, and preferred work style.",
-    layout: { x: 946, y: 96, width: 350, height: 292 },
+    layout: { x: 868, y: 104, width: 292, height: 240 },
     content: [
       { label: "Primary", value: "Product-minded frontend engineer" },
       { label: "Adjacent", value: "UX engineer, creative technologist" },
@@ -54,7 +54,7 @@ export const islandDefinitions: IslandDefinition[] = [
     title: "Career Trial",
     eyebrow: "Simulation",
     summary: "A short challenge that previews the actual work of the role.",
-    layout: { x: 900, y: 438, width: 380, height: 282 },
+    layout: { x: 842, y: 392, width: 310, height: 238 },
     content: [
       { label: "Scenario", value: "Design a student onboarding mirror" },
       { label: "Task", value: "Explain one tradeoff and improve the UI" },

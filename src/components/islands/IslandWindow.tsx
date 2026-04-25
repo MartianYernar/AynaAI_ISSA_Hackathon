@@ -47,8 +47,8 @@ export function IslandWindow({
     <Rnd
       bounds="parent"
       className={`island-window ${active ? "is-active" : ""}`}
-      minHeight={230}
-      minWidth={280}
+      minHeight={190}
+      minWidth={240}
       onDragStart={() => onFocus(island.id)}
       onDragStop={handleDragStop}
       onMouseDown={() => onFocus(island.id)}
