@@ -7,6 +7,7 @@ interface CharacterStore {
   state: CharacterState;
   targetIslandId: IslandId | null;
   moveTo: (x: number, y: number) => void;
+  startWorkspaceEntry: () => void;
   walkToIsland: (islandId: IslandId) => void;
   pointAtIsland: (islandId: IslandId) => void;
   setState: (state: CharacterState) => void;
@@ -30,6 +31,36 @@ export const useCharacterStore = create<CharacterStore>((set) => ({
       state: "walking",
       targetIslandId: null,
     }),
+  startWorkspaceEntry: () => {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const centerPosition = {
+      x: viewportWidth / 2,
+      y: viewportHeight * 0.52,
+    };
+    const floorPosition = {
+      x: viewportWidth / 2,
+      y: Math.max(420, viewportHeight - 118),
+    };
+
+    set({
+      position: centerPosition,
+      state: "landing",
+      targetIslandId: null,
+    });
+
+    window.setTimeout(() => {
+      set({
+        position: floorPosition,
+        state: "walking",
+        targetIslandId: null,
+      });
+    }, 620);
+
+    window.setTimeout(() => {
+      set({ state: "idle" });
+    }, 1560);
+  },
   walkToIsland: (islandId) =>
     set({
       position: getNearIslandPosition(islandId),

@@ -7,6 +7,7 @@ export type IslandId =
 
 export type CharacterState =
   | "idle"
+  | "landing"
   | "walking"
   | "pointing"
   | "thinking"

@@ -21,7 +21,7 @@ const islands = islandDefinitions.reduce<IslandRecord>((record, island) => {
 }, {} as IslandRecord);
 
 const openIslands = islandDefinitions.reduce<IslandVisibility>((record, island) => {
-  record[island.id] = island.id === "roadmap" || island.id === "career-match";
+  record[island.id] = false;
   return record;
 }, {} as IslandVisibility);
 
