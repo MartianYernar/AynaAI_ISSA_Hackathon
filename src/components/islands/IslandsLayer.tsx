@@ -27,9 +27,11 @@ function renderIslandContent(island: IslandDefinition) {
 export function IslandsLayer() {
   const islands = useIslandStore((state) => state.islands);
   const openIslands = useIslandStore((state) => state.openIslands);
+  const minimizedIslands = useIslandStore((state) => state.minimizedIslands);
   const activeIslandId = useIslandStore((state) => state.activeIslandId);
   const closeIsland = useIslandStore((state) => state.closeIsland);
   const focusIsland = useIslandStore((state) => state.focusIsland);
+  const minimizeIsland = useIslandStore((state) => state.minimizeIsland);
   const updateIslandLayout = useIslandStore((state) => state.updateIslandLayout);
 
   return (
@@ -40,9 +42,11 @@ export function IslandsLayer() {
             active={activeIslandId === island.id}
             island={island}
             key={island.id}
+            minimized={minimizedIslands[island.id]}
             onClose={closeIsland}
             onFocus={focusIsland}
             onLayoutChange={updateIslandLayout}
+            onMinimize={minimizeIsland}
           >
             {renderIslandContent(island)}
           </IslandWindow>

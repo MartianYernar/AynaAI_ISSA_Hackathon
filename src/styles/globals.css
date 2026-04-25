@@ -313,14 +313,14 @@ button {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #ebe8e1;
+  background: #d8d6d0;
 }
 
 .camera-background {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  background: #ebe8e1;
+  background: #d8d6d0;
 }
 
 .camera-background video {
@@ -330,13 +330,13 @@ button {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  filter: grayscale(1) contrast(0.86) brightness(1.06);
+  filter: grayscale(1) contrast(0.96) brightness(0.96);
   transform: scaleX(-1);
   transition: opacity 420ms ease;
 }
 
 .camera-background.is-ready video {
-  opacity: 0.82;
+  opacity: 0.94;
 }
 
 .camera-fallback {
@@ -378,18 +378,18 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(247, 245, 241, 0.54), rgba(247, 245, 241, 0.16) 32%, rgba(247, 245, 241, 0.6)),
-    radial-gradient(circle at 50% 48%, rgba(255, 255, 255, 0.04), rgba(20, 20, 20, 0.22)),
-    rgba(235, 232, 225, 0.2);
+    linear-gradient(180deg, rgba(12, 12, 11, 0.14), rgba(255, 255, 255, 0.02) 34%, rgba(12, 12, 11, 0.18)),
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0), rgba(18, 18, 17, 0.18)),
+    rgba(85, 165, 131, 0.035);
   pointer-events: none;
 }
 
 .camera-stage::after {
   position: absolute;
   inset: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.46);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 34px;
-  box-shadow: inset 0 0 0 1px rgba(23, 23, 23, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(23, 23, 23, 0.05);
   content: "";
   pointer-events: none;
   z-index: 1;
@@ -433,53 +433,68 @@ button {
   min-height: 0;
   flex-direction: column;
   overflow: hidden;
-  border: 1px solid rgba(30, 30, 28, 0.12);
-  border-radius: 26px;
-  background: rgba(252, 251, 247, 0.92);
+  border: 1px solid rgba(30, 30, 28, 0.1);
+  border-radius: 22px;
+  background: rgba(252, 251, 247, 0.86);
   box-shadow:
-    0 26px 70px rgba(23, 23, 23, 0.17),
-    0 2px 0 rgba(255, 255, 255, 0.72) inset;
-  backdrop-filter: blur(18px) saturate(0.78);
+    0 18px 46px rgba(23, 23, 23, 0.13),
+    0 1px 0 rgba(255, 255, 255, 0.68) inset;
+  backdrop-filter: blur(14px) saturate(0.84);
+}
+
+.island-window.is-minimized .island-card {
+  border-radius: 22px;
 }
 
 .island-window.is-active .island-card {
-  border-color: rgba(23, 23, 23, 0.28);
+  border-color: rgba(85, 165, 131, 0.42);
   box-shadow:
-    0 34px 86px rgba(23, 23, 23, 0.22),
-    0 2px 0 rgba(255, 255, 255, 0.8) inset;
+    0 22px 58px rgba(23, 23, 23, 0.16),
+    0 0 0 3px rgba(85, 165, 131, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.76) inset;
 }
 
 .island-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 18px;
-  padding: 20px 20px 14px;
+  gap: 14px;
+  padding: 16px 16px 10px;
   cursor: move;
+}
+
+.island-window.is-minimized .island-header {
+  height: 66px;
+  align-items: center;
+  padding: 12px 14px;
 }
 
 .island-header span,
 .island-content span {
-  color: #77736d;
-  font-size: 10px;
+  color: #6d6962;
+  font-size: 9px;
   font-weight: 720;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
 .island-header h2 {
-  margin: 5px 0 0;
+  margin: 4px 0 0;
   color: #151513;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 23px;
+  font-size: 20px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.05;
 }
 
+.island-window.is-minimized .island-header h2 {
+  font-size: 17px;
+}
+
 .island-controls {
   display: inline-flex;
-  gap: 7px;
+  gap: 5px;
   padding: 3px;
   border: 1px solid rgba(23, 23, 23, 0.08);
   border-radius: 999px;
@@ -488,8 +503,8 @@ button {
 
 .window-dot {
   display: grid;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   place-items: center;
   border: 0;
   border-radius: 999px;
@@ -503,7 +518,7 @@ button {
 }
 
 .window-dot:hover {
-  background: #ece9e2;
+  background: rgba(85, 165, 131, 0.12);
   color: #171717;
   transform: translateY(-1px);
 }
@@ -513,17 +528,17 @@ button {
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   overflow: auto;
-  padding: 0 20px 20px;
+  padding: 0 16px 16px;
 }
 
 .island-content p {
   max-width: 58ch;
   margin: 0;
   color: #3b3935;
-  font-size: 13px;
-  line-height: 1.55;
+  font-size: 12px;
+  line-height: 1.48;
 }
 
 .interest-bars,
@@ -532,7 +547,7 @@ button {
 .match-card,
 .trial-panel {
   display: grid;
-  gap: 8px;
+  gap: 7px;
   margin: 0;
   padding: 0;
 }
@@ -543,11 +558,11 @@ button {
 .match-card div,
 .trial-panel section {
   display: grid;
-  gap: 6px;
-  padding: 12px 13px;
+  gap: 5px;
+  padding: 10px 11px;
   border: 1px solid rgba(23, 23, 23, 0.08);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.66);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset;
   list-style: none;
 }
@@ -568,7 +583,7 @@ button {
 
 .island-content strong {
   color: #171717;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 610;
   line-height: 1.34;
 }
@@ -579,21 +594,21 @@ button {
 
 .roadmap-list li {
   position: relative;
-  min-height: 58px;
-  padding-left: 48px;
+  min-height: 50px;
+  padding-left: 42px;
   counter-increment: roadmap;
 }
 
 .roadmap-list li::before {
   position: absolute;
-  top: 14px;
-  left: 13px;
+  top: 12px;
+  left: 11px;
   display: grid;
-  width: 23px;
-  height: 23px;
+  width: 21px;
+  height: 21px;
   place-items: center;
   border-radius: 999px;
-  background: #171717;
+  background: #55a583;
   color: #ffffff;
   content: counter(roadmap);
   font-size: 11px;
@@ -610,8 +625,8 @@ button {
   padding: 8px;
   border: 1px solid rgba(23, 23, 23, 0.1);
   border-radius: 999px;
-  background: rgba(252, 251, 247, 0.82);
-  box-shadow: 0 18px 46px rgba(23, 23, 23, 0.14);
+  background: rgba(252, 251, 247, 0.78);
+  box-shadow: 0 14px 38px rgba(23, 23, 23, 0.12);
   backdrop-filter: blur(18px) saturate(0.75);
   transform: translateY(-50%);
 }
@@ -634,13 +649,13 @@ button {
 }
 
 .island-nav button:hover {
-  background: #eeeae2;
+  background: rgba(85, 165, 131, 0.12);
   color: #171717;
   transform: translateX(-1px);
 }
 
 .island-nav button.is-selected {
-  background: #171717;
+  background: #55a583;
   color: #ffffff;
 }
 
@@ -672,22 +687,22 @@ button {
 
 .command-bar {
   position: absolute;
-  right: max(94px, 8vw);
-  bottom: 26px;
-  left: max(94px, 8vw);
+  right: max(104px, 12vw);
+  bottom: 22px;
+  left: max(104px, 12vw);
   z-index: 50;
   display: flex;
-  min-height: 70px;
+  min-height: 56px;
   align-items: center;
-  gap: 8px;
-  padding: 10px;
+  gap: 6px;
+  padding: 7px;
   border: 1px solid rgba(23, 23, 23, 0.12);
   border-radius: 999px;
-  background: rgba(252, 251, 247, 0.92);
+  background: rgba(252, 251, 247, 0.86);
   box-shadow:
-    0 24px 70px rgba(23, 23, 23, 0.2),
-    0 2px 0 rgba(255, 255, 255, 0.8) inset;
-  backdrop-filter: blur(20px) saturate(0.75);
+    0 16px 46px rgba(23, 23, 23, 0.15),
+    0 1px 0 rgba(255, 255, 255, 0.72) inset;
+  backdrop-filter: blur(16px) saturate(0.82);
 }
 
 .command-input-shell {
@@ -696,17 +711,17 @@ button {
   flex: 1;
   align-items: center;
   align-self: stretch;
-  padding: 0 18px;
+  padding: 0 14px;
   border: 1px solid rgba(23, 23, 23, 0.08);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-  color: #6f6b64;
-  font-size: 14px;
+  background: rgba(255, 255, 255, 0.62);
+  color: #625f59;
+  font-size: 13px;
 }
 
 .command-bar button {
   display: inline-flex;
-  height: 48px;
+  height: 40px;
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -726,7 +741,7 @@ button {
 
 .command-icon-button,
 .command-send-button {
-  width: 48px;
+  width: 40px;
   flex: 0 0 auto;
   background: #ffffff;
   color: #171717;
@@ -734,33 +749,33 @@ button {
 }
 
 .command-icon-button:hover {
-  background: #eeeae2;
+  background: rgba(85, 165, 131, 0.12);
 }
 
 .command-send-button {
-  background: #171717;
+  background: #55a583;
   color: #ffffff;
 }
 
 .command-send-button:hover {
-  background: #2f2f2d;
+  background: #43866b;
 }
 
 .command-action {
-  padding: 0 14px;
+  padding: 0 11px;
   background: transparent;
   color: #4e4b46;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .command-action:hover {
-  background: #eeeae2;
+  background: rgba(85, 165, 131, 0.12);
   color: #171717;
 }
 
 .command-divider {
   width: 1px;
-  height: 34px;
+  height: 28px;
   margin: 0 3px;
   background: rgba(23, 23, 23, 0.1);
 }
@@ -771,8 +786,8 @@ button {
 }
 
 .state-pills button {
-  height: 34px;
-  padding: 0 10px;
+  height: 30px;
+  padding: 0 8px;
   background: transparent;
   color: #74706a;
   font-size: 12px;
@@ -780,7 +795,7 @@ button {
 }
 
 .state-pills button:hover {
-  background: #eeeae2;
+  background: rgba(85, 165, 131, 0.12);
   color: #171717;
 }
 
@@ -1120,7 +1135,7 @@ button {
     right: 14px;
     bottom: 14px;
     left: 14px;
-    min-height: 60px;
+    min-height: 52px;
     border-radius: 24px;
   }
 
@@ -1129,12 +1144,12 @@ button {
   }
 
   .command-bar button {
-    height: 42px;
+    height: 38px;
   }
 
   .command-icon-button,
   .command-send-button {
-    width: 42px;
+    width: 38px;
   }
 
   .island-nav {
