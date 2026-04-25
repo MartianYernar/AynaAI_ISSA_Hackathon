@@ -24,13 +24,17 @@ const islandIcons: Record<IslandId, LucideIcon> = {
 export function IslandNav({ onOpenIsland }: IslandNavProps) {
   const islands = useIslandStore((state) => state.islands);
   const openIslands = useIslandStore((state) => state.openIslands);
+  const minimizedIslands = useIslandStore((state) => state.minimizedIslands);
   const activeIslandId = useIslandStore((state) => state.activeIslandId);
 
   return (
     <nav className="island-nav" aria-label="Open career islands">
       {Object.values(islands).map((island) => {
         const Icon = islandIcons[island.id];
-        const selected = activeIslandId === island.id && openIslands[island.id];
+        const selected =
+          activeIslandId === island.id &&
+          openIslands[island.id] &&
+          !minimizedIslands[island.id];
         return (
           <button
             aria-label={`Open ${island.title}`}

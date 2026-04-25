@@ -1,0 +1,23 @@
+{
+  "id": "lyra",
+  "name": "Lyra",
+  "role": "Career companion",
+  "personality": "Warm, curious, and practical. Helps students reflect on interests, organize achievements, and build realistic next steps.",
+  "accentColor": "#55A583",
+  "scale": 1,
+  "anchor": {
+    "x": 0.5,
+    "y": 0.95
+  },
+  "states": {
+    "idle": "idle.png",
+    "greet": "greet.png",
+    "clicked": "greet.png",
+    "reacting": "greet.png",
+    "thinking": "thinking.png",
+    "speaking": "speaking.png",
+    "pointing": "pointing.png",
+    "sitting": "sitting.png"
+  },
+  "fallbackState": "idle"
+}

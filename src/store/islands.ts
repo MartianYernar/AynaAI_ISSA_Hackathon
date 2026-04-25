@@ -57,6 +57,7 @@ export const useIslandStore = create<IslandStore>((set) => ({
   minimizeIsland: (islandId) =>
     set((state) => ({
       activeIslandId: islandId,
+      openIslands: { ...state.openIslands, [islandId]: false },
       minimizedIslands: { ...state.minimizedIslands, [islandId]: true },
     })),
   updateIslandLayout: (islandId, layout) =>
