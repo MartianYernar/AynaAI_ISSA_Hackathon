@@ -1,1 +1,1 @@
-export {};
+export { FullscreenScene } from "../scene/FullscreenScene";

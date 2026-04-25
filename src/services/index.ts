@@ -1,1 +1,1 @@
-export {};
+export { islandDefinitions } from "./mockData";

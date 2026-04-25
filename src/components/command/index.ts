@@ -1,1 +1,1 @@
-export {};
+export { CommandBar } from "./CommandBar";

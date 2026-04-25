@@ -1,1 +1,1 @@
-export {};
+export { DesktopCharacter } from "./DesktopCharacter";
