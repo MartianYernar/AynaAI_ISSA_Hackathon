@@ -1,0 +1,1 @@
+export { WorkspaceModuleRenderer } from "./WorkspaceModuleRenderer";
