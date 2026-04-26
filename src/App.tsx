@@ -4,6 +4,7 @@ import { ShiningText } from "./components/ui/shining-text";
 import { LandingHero } from "./features/landing";
 import { LyraModelTest } from "./features/landing3d";
 import { WorkspaceCanvas } from "./features/workspaceV2";
+import { CompanionOverlay } from "./features/companion";
 import { useCharacterStore } from "./store";
 import type { StudentProfile } from "./types";
 import "./styles/globals.css";
@@ -381,8 +382,41 @@ function App() {
     hasAchievements: "Maybe, I am not sure what counts",
   });
 
+  if (window.location.hash === "#companion") {
+    return <CompanionOverlay />;
+  }
+
+  useEffect(() => {
+    if (window.aynaDesktop?.onCompanionCommand) {
+      const release = window.aynaDesktop.onCompanionCommand((command) => {
+        if (command === "roadmap" || command === "achievement-upload") {
+          localStorage.setItem("aynaDesktopPendingCommand", command);
+          console.log("Companion command received:", command);
+          setPhase("workspace");
+        }
+      });
+      return () => release?.();
+    }
+
+    return undefined;
+  }, []);
+
+  const showCompanion = () => {
+    if (window.aynaDesktop?.showCompanion) {
+      window.aynaDesktop.showCompanion();
+      return;
+    }
+
+    console.log("aynaDesktop.showCompanion is unavailable");
+  };
+
   if (phase === "landing") {
-    return <LandingHero onStart={() => setPhase("onboarding")} />;
+    return (
+      <LandingHero
+        onStart={() => setPhase("onboarding")}
+        onLaunchCompanion={showCompanion}
+      />
+    );
   }
 
   if (phase === "lyra-3d-test") {

@@ -49,6 +49,209 @@ body,
   margin: 0;
 }
 
+html.companion-active,
+body.companion-active,
+#root.companion-active {
+  background: transparent !important;
+}
+
+.companion-root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: transparent;
+  color: #f8fafc;
+  overflow: hidden;
+}
+
+.companion-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-app-region: drag;
+}
+
+.companion-card {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+  pointer-events: auto;
+}
+
+.companion-lyra-button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  -webkit-app-region: no-drag;
+}
+
+.companion-lyra-image {
+  height: 340px;
+  width: auto;
+  pointer-events: auto;
+  user-select: none;
+  transition: transform 180ms ease, filter 180ms ease;
+  filter: drop-shadow(0 26px 46px rgba(15, 23, 42, 0.28));
+}
+
+.companion-avatar--idle {
+  animation: companion-breath 4s ease-in-out infinite;
+}
+
+.companion-avatar--hover .companion-lyra-image {
+  transform: scale(1.03);
+  filter: drop-shadow(0 26px 46px rgba(85, 165, 131, 0.4));
+}
+
+.companion-avatar--greet {
+  animation: companion-pop 0.6s ease-out;
+}
+
+.companion-avatar--speaking {
+  animation: companion-bob 1.2s ease-in-out infinite;
+}
+
+.companion-avatar--thinking {
+  animation: companion-sway 2s ease-in-out infinite, companion-glow 1.5s ease-in-out infinite;
+}
+
+.companion-avatar--success {
+  animation: companion-success-pop 0.4s ease-out;
+}
+
+@keyframes companion-breath {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes companion-pop {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes companion-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes companion-sway {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+@keyframes companion-glow {
+  0%, 100% { filter: drop-shadow(0 26px 46px rgba(15, 23, 42, 0.28)); }
+  50% { filter: drop-shadow(0 26px 46px rgba(85, 165, 131, 0.4)); }
+}
+
+@keyframes companion-success-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.companion-speech-bubble {
+  position: absolute;
+  bottom: calc(100% + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(12, 20, 28, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(20px);
+  color: #f8fafc;
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: nowrap;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.24);
+  -webkit-app-region: no-drag;
+}
+
+.companion-speech-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(12, 20, 28, 0.32);
+}
+
+.companion-radial-menu {
+  position: absolute;
+  bottom: calc(100% + 60px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  -webkit-app-region: no-drag;
+}
+
+.companion-radial-button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(85, 165, 131, 0.9);
+  color: #f8fafc;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2);
+}
+
+.companion-radial-button:hover {
+  transform: scale(1.1);
+  background: #4f8e72;
+}
+
+.companion-radial-button--open {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.companion-radial-button--roadmap {
+  top: 25px;
+  right: 25px;
+}
+
+.companion-radial-button--upload {
+  bottom: 25px;
+  right: 25px;
+}
+
+.companion-radial-button--hide {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 button,
 input,
 textarea,

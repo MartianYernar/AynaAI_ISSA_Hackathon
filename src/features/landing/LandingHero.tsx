@@ -5,9 +5,10 @@ import { HeroLyra3D } from "./HeroLyra3D";
 
 interface LandingHeroProps {
   onStart: () => void;
+  onLaunchCompanion?: () => void;
 }
 
-export function LandingHero({ onStart }: LandingHeroProps) {
+export function LandingHero({ onStart, onLaunchCompanion }: LandingHeroProps) {
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const [reduceMotion, setReduceMotion] = useState(false);
 
@@ -62,6 +63,13 @@ export function LandingHero({ onStart }: LandingHeroProps) {
             </button>
             <button className="is-secondary" type="button">
               See how it works
+            </button>
+            <button
+              className="is-secondary"
+              onClick={() => onLaunchCompanion?.()}
+              type="button"
+            >
+              Launch Lyra companion
             </button>
           </div>
         </div>
