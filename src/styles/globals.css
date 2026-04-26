@@ -71,9 +71,12 @@ button {
 }
 
 .landing-shader-layer {
+  position: absolute;
+  inset: 0;
   z-index: 0;
   opacity: 0.38;
   mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
 .landing-hero-content {
@@ -90,6 +93,8 @@ button {
 }
 
 .landing-copy {
+  position: relative;
+  z-index: 3;
   display: grid;
   gap: 20px;
   max-width: 560px;
@@ -154,12 +159,14 @@ button {
 
 .landing-visual {
   position: relative;
+  z-index: 2;
   min-height: 560px;
   perspective: 1000px;
 }
 
 .hero-depth-card {
   position: absolute;
+  z-index: 1;
   border: 1px solid rgba(67, 55, 115, 0.1);
   border-radius: 28px;
   background: rgba(255, 254, 250, 0.58);
@@ -185,8 +192,9 @@ button {
 
 .hero-lyra {
   position: absolute;
-  right: 58px;
-  bottom: 32px;
+  right: 22px;
+  bottom: -18px;
+  z-index: 4;
   width: min(430px, 48vw);
   aspect-ratio: 1;
   transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -198,8 +206,41 @@ button {
   position: absolute;
 }
 
+.hero-lyra-3d {
+  width: min(500px, 52vw);
+  height: min(520px, 58vw);
+  cursor: grab;
+}
+
+.hero-lyra-3d canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+}
+
+.hero-lyra-3d-fallback {
+  position: absolute;
+  inset: 12%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border: 1px solid rgba(85, 165, 131, 0.22);
+  border-radius: 22px;
+  background: rgba(255, 254, 250, 0.9);
+  color: #514c61;
+  font-size: 14px;
+  font-weight: 720;
+  text-align: center;
+  box-shadow: 0 18px 42px rgba(38, 35, 49, 0.12);
+}
+
 .hero-lyra-shadow {
   position: absolute;
+  z-index: 1;
   right: 18%;
   bottom: 7%;
   left: 18%;
@@ -207,6 +248,87 @@ button {
   border-radius: 50%;
   background: rgba(38, 35, 49, 0.2);
   filter: blur(12px);
+}
+
+.lyra-model-test {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: auto 1fr;
+  gap: 18px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(123, 101, 199, 0.18), transparent 32%),
+    radial-gradient(circle at 18% 84%, rgba(85, 165, 131, 0.14), transparent 34%),
+    #f8f6f0;
+}
+
+.lyra-model-test-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.lyra-model-test-header div {
+  display: grid;
+  gap: 6px;
+}
+
+.lyra-model-test-header span {
+  color: #55a583;
+  font-size: 11px;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lyra-model-test-header h1 {
+  margin: 0;
+  color: #28233a;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5vw, 58px);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.lyra-model-test-header p {
+  margin: 0;
+  color: #5b5669;
+  font-size: 15px;
+}
+
+.lyra-model-test-header button {
+  height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #55a583;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 720;
+}
+
+.lyra-model-test-canvas {
+  position: relative;
+  min-height: 560px;
+  overflow: hidden;
+  border: 1px solid rgba(62, 52, 105, 0.12);
+  border-radius: 28px;
+  background: #f8f6f0;
+  box-shadow: 0 24px 70px rgba(38, 35, 49, 0.13);
+}
+
+.lyra-model-test-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #514c61;
+  font-weight: 720;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,6 +1,7 @@
 import { useEffect, useState, type MouseEvent } from "react";
+import { AnimatedShaderBackground } from "../../components/animated-shader-hero";
 import { HeroLines } from "./HeroLines";
-import { HeroLyra } from "./HeroLyra";
+import { HeroLyra3D } from "./HeroLyra3D";
 
 interface LandingHeroProps {
   onStart: () => void;
@@ -8,7 +9,6 @@ interface LandingHeroProps {
 
 export function LandingHero({ onStart }: LandingHeroProps) {
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
-  const [isStartHovered, setIsStartHovered] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
@@ -42,7 +42,8 @@ export function LandingHero({ onStart }: LandingHeroProps) {
       onMouseLeave={() => setParallax({ x: 0, y: 0 })}
       onMouseMove={updateParallax}
     >
-      <HeroLines />
+      <AnimatedShaderBackground className="landing-shader-layer" />
+      <HeroLines isExiting={false} parallax={parallax} reduceMotion={reduceMotion} />
       <section className="landing-hero-content">
         <div className="landing-copy">
           <span>Ayna AI companion</span>
@@ -55,8 +56,6 @@ export function LandingHero({ onStart }: LandingHeroProps) {
           <div className="landing-actions">
             <button
               onClick={onStart}
-              onMouseEnter={() => setIsStartHovered(true)}
-              onMouseLeave={() => setIsStartHovered(false)}
               type="button"
             >
               Start with Lyra
@@ -70,8 +69,8 @@ export function LandingHero({ onStart }: LandingHeroProps) {
         <aside className="landing-visual" aria-label="Lyra preview">
           <div className="hero-depth-card card-one" />
           <div className="hero-depth-card card-two" />
-          <HeroLyra
-            isStartHovered={isStartHovered}
+          <HeroLyra3D
+            isExiting={false}
             parallax={parallax}
             reduceMotion={reduceMotion}
           />

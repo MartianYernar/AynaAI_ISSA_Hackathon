@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { DesktopCharacter } from "./components/avatar";
 import { ShiningText } from "./components/ui/shining-text";
 import { LandingHero } from "./features/landing";
+import { LyraModelTest } from "./features/landing3d";
 import { WorkspaceCanvas } from "./features/workspaceV2";
 import { useCharacterStore } from "./store";
 import type { StudentProfile } from "./types";
@@ -9,6 +10,7 @@ import "./styles/globals.css";
 
 type AppPhase =
   | "landing"
+  | "lyra-3d-test"
   | "onboarding"
   | "character-selection"
   | "guide-confirmation"
@@ -364,7 +366,9 @@ function WorkspaceScreen({
 }
 
 function App() {
-  const [phase, setPhase] = useState<AppPhase>("landing");
+  const [phase, setPhase] = useState<AppPhase>(() =>
+    window.location.hash === "#lyra-3d-test" ? "lyra-3d-test" : "landing",
+  );
   const [selectedCharacter, setSelectedCharacter] =
     useState<CharacterOption>("ayna");
   const [profile, setProfile] = useState<StudentProfile>({
@@ -379,6 +383,10 @@ function App() {
 
   if (phase === "landing") {
     return <LandingHero onStart={() => setPhase("onboarding")} />;
+  }
+
+  if (phase === "lyra-3d-test") {
+    return <LyraModelTest onExit={() => setPhase("landing")} />;
   }
 
   if (phase === "onboarding") {
