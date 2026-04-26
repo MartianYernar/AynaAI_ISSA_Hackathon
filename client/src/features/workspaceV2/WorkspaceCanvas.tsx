@@ -61,29 +61,51 @@ const nodeTypes: NodeTypes = {
   "workspace-node": WorkspaceNodeRenderer,
 };
 
-const BUDDY_NUDGE_KEY = "ayna-workspace-buddy-nudge";
+const LAYOUT_NUDGES_KEY = "ayna-workspace-layout-nudges";
+/** @deprecated migrated into LAYOUT_NUDGES_KEY */
+const LEGACY_BUDDY_NUDGE_KEY = "ayna-workspace-buddy-nudge";
 
-function readBuddyNudge(): { x: number; y: number } {
+type LayoutNudge = { x: number; y: number };
+
+function parseNudge(value: unknown): LayoutNudge | null {
+  if (
+    value &&
+    typeof value === "object" &&
+    "x" in value &&
+    "y" in value &&
+    typeof (value as { x: unknown }).x === "number" &&
+    typeof (value as { y: unknown }).y === "number"
+  ) {
+    return { x: (value as { x: number }).x, y: (value as { y: number }).y };
+  }
+  return null;
+}
+
+function readLayoutNudges(): { avatar: LayoutNudge; message: LayoutNudge } {
+  const zero = { x: 0, y: 0 };
   try {
-    const raw = sessionStorage.getItem(BUDDY_NUDGE_KEY);
-    if (!raw) {
-      return { x: 0, y: 0 };
+    const raw = sessionStorage.getItem(LAYOUT_NUDGES_KEY);
+    if (raw) {
+      const j = JSON.parse(raw) as unknown;
+      if (j && typeof j === "object") {
+        const avatar = parseNudge((j as { avatar?: unknown }).avatar);
+        const message = parseNudge((j as { message?: unknown }).message);
+        if (avatar && message) {
+          return { avatar, message };
+        }
+      }
     }
-    const j = JSON.parse(raw) as unknown;
-    if (
-      j &&
-      typeof j === "object" &&
-      "x" in j &&
-      "y" in j &&
-      typeof (j as { x: unknown }).x === "number" &&
-      typeof (j as { y: unknown }).y === "number"
-    ) {
-      return { x: (j as { x: number }).x, y: (j as { y: number }).y };
+    const legacyRaw = sessionStorage.getItem(LEGACY_BUDDY_NUDGE_KEY);
+    if (legacyRaw) {
+      const legacy = parseNudge(JSON.parse(legacyRaw) as unknown);
+      if (legacy) {
+        return { avatar: { ...legacy }, message: { ...legacy } };
+      }
     }
   } catch {
     /* ignore */
   }
-  return { x: 0, y: 0 };
+  return { avatar: zero, message: zero };
 }
 
 function toFlowNode(
@@ -139,27 +161,50 @@ export function WorkspaceCanvas({
   const setCharacterState = useCharacterStore((state) => state.setState);
   const { outputLanguage } = useOutputLanguage();
 
-  const [buddyNudge, setBuddyNudge] = useState(readBuddyNudge);
-  const [buddyDragging, setBuddyDragging] = useState(false);
-  const buddyNudgeRef = useRef(buddyNudge);
-  buddyNudgeRef.current = buddyNudge;
-  const buddyDragRef = useRef<{
+  const initialLayout = readLayoutNudges();
+  const [avatarNudge, setAvatarNudge] = useState(initialLayout.avatar);
+  const [messageNudge, setMessageNudge] = useState(initialLayout.message);
+  const [layoutDragging, setLayoutDragging] = useState(false);
+  const avatarNudgeRef = useRef(avatarNudge);
+  const messageNudgeRef = useRef(messageNudge);
+  avatarNudgeRef.current = avatarNudge;
+  messageNudgeRef.current = messageNudge;
+  const layoutDragKindRef = useRef<"avatar" | "message" | null>(null);
+  const layoutDragRef = useRef<{
     clientX: number;
     clientY: number;
-    start: { x: number; y: number };
+    start: LayoutNudge;
   } | null>(null);
 
-  const beginBuddyDrag = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const origin = { ...buddyNudgeRef.current };
-    buddyDragRef.current = {
-      clientX: event.clientX,
-      clientY: event.clientY,
-      start: origin,
-    };
-    setBuddyDragging(true);
-  }, []);
+  const beginAvatarDrag = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      layoutDragKindRef.current = "avatar";
+      layoutDragRef.current = {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        start: { ...avatarNudgeRef.current },
+      };
+      setLayoutDragging(true);
+    },
+    [],
+  );
+
+  const beginMessageDrag = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      layoutDragKindRef.current = "message";
+      layoutDragRef.current = {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        start: { ...messageNudgeRef.current },
+      };
+      setLayoutDragging(true);
+    },
+    [],
+  );
 
   const dismissAssistantBubble = useCallback(() => {
     stopAyanaSpeech();
@@ -169,29 +214,40 @@ export function WorkspaceCanvas({
   }, [setCharacterState]);
 
   useEffect(() => {
-    if (!buddyDragging) {
+    if (!layoutDragging) {
       return;
     }
     const onMove = (e: PointerEvent) => {
-      const d = buddyDragRef.current;
-      if (!d) {
+      const d = layoutDragRef.current;
+      const kind = layoutDragKindRef.current;
+      if (!d || !kind) {
         return;
       }
-      const next = {
+      const next: LayoutNudge = {
         x: d.start.x + e.clientX - d.clientX,
         y: d.start.y + e.clientY - d.clientY,
       };
-      buddyNudgeRef.current = next;
-      setBuddyNudge(next);
+      if (kind === "avatar") {
+        avatarNudgeRef.current = next;
+        setAvatarNudge(next);
+      } else {
+        messageNudgeRef.current = next;
+        setMessageNudge(next);
+      }
     };
     const end = () => {
-      buddyDragRef.current = null;
-      setBuddyDragging(false);
+      layoutDragRef.current = null;
+      layoutDragKindRef.current = null;
+      setLayoutDragging(false);
       try {
         sessionStorage.setItem(
-          BUDDY_NUDGE_KEY,
-          JSON.stringify(buddyNudgeRef.current),
+          LAYOUT_NUDGES_KEY,
+          JSON.stringify({
+            avatar: avatarNudgeRef.current,
+            message: messageNudgeRef.current,
+          }),
         );
+        sessionStorage.removeItem(LEGACY_BUDDY_NUDGE_KEY);
       } catch {
         /* ignore */
       }
@@ -204,14 +260,14 @@ export function WorkspaceCanvas({
       window.removeEventListener("pointerup", end);
       window.removeEventListener("pointercancel", end);
     };
-  }, [buddyDragging]);
+  }, [layoutDragging]);
 
   useEffect(() => {
-    document.body.style.cursor = buddyDragging ? "grabbing" : "";
+    document.body.style.cursor = layoutDragging ? "grabbing" : "";
     return () => {
       document.body.style.cursor = "";
     };
-  }, [buddyDragging]);
+  }, [layoutDragging]);
 
   useEffect(() => {
     const r = createSpeechRecognition();
@@ -675,40 +731,34 @@ export function WorkspaceCanvas({
         <div
           className="workspace-v2-companion-nudge"
           style={{
-            transform: `translate(${buddyNudge.x}px, ${buddyNudge.y}px)`,
+            transform: `translate(${avatarNudge.x}px, ${avatarNudge.y}px)`,
           }}
         >
+          <button
+            aria-label="Drag to move Ayana"
+            className="workspace-v2-avatar-move-handle"
+            onPointerDown={beginAvatarDrag}
+            type="button"
+          >
+            <GripVertical aria-hidden size={18} strokeWidth={2} />
+          </button>
           <DesktopCharacter />
         </div>
       </div>
-
-      {!assistantMessage ? (
-        <button
-          aria-label="Drag to move Ayana"
-          className="workspace-v2-buddy-move-handle"
-          onPointerDown={beginBuddyDrag}
-          type="button"
-          style={{
-            transform: `translate(${buddyNudge.x}px, ${buddyNudge.y}px)`,
-          }}
-        >
-          <GripVertical aria-hidden size={18} strokeWidth={2} />
-        </button>
-      ) : null}
 
       {assistantMessage ? (
         <div
           className="workspace-v2-message"
           role="status"
           style={{
-            transform: `translate(${buddyNudge.x}px, ${buddyNudge.y}px)`,
+            transform: `translate(${messageNudge.x}px, ${messageNudge.y}px)`,
           }}
         >
           <div className="workspace-v2-message-toolbar">
             <button
-              aria-label="Drag to move Ayana and message"
+              aria-label="Drag to move message"
               className="workspace-v2-message-drag"
-              onPointerDown={beginBuddyDrag}
+              onPointerDown={beginMessageDrag}
               type="button"
             >
               <GripVertical aria-hidden size={16} strokeWidth={2} />

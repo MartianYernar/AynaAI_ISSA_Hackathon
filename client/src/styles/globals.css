@@ -1678,11 +1678,11 @@ button {
   pointer-events: none;
 }
 
-.workspace-v2-buddy-move-handle {
+.workspace-v2-avatar-move-handle {
   position: absolute;
-  left: 40px;
-  bottom: 124px;
-  z-index: 23;
+  left: 14px;
+  bottom: 88px;
+  z-index: 6;
   display: grid;
   place-items: center;
   width: 38px;
@@ -1698,7 +1698,7 @@ button {
   touch-action: none;
 }
 
-.workspace-v2-buddy-move-handle:active {
+.workspace-v2-avatar-move-handle:active {
   cursor: grabbing;
 }
 
