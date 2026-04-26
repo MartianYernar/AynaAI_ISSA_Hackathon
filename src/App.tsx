@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DesktopCharacter } from "./components/avatar";
-import { WorkspaceModuleRenderer } from "./components/workspace";
-import { getMockWorkspaceModules } from "./services";
+import { LandingHero } from "./features/landing";
+import { WorkspaceCanvas } from "./features/workspaceV2";
 import { useCharacterStore } from "./store";
-import type { StudentProfile, WorkspaceModule } from "./types";
+import type { StudentProfile } from "./types";
 import "./styles/globals.css";
 
-type AppPhase = "onboarding" | "character-selection" | "workspace";
+type AppPhase =
+  | "landing"
+  | "onboarding"
+  | "character-selection"
+  | "guide-confirmation"
+  | "workspace";
 type CharacterOption = "ayna" | "mentor" | "compass" | "builder";
 
 interface OnboardingStep {
@@ -110,16 +115,6 @@ const characterOptions: Array<{
     name: "Builder",
     description: "Focused partner for turning ideas into projects.",
   },
-];
-
-const workspaceModuleTriggers: Array<{
-  ids: string[];
-  keywords: string[];
-}> = [
-  { ids: ["interest-bars", "roadmap-timeline"], keywords: ["roadmap", "path", "plan", "next"] },
-  { ids: ["interest-bars"], keywords: ["strength", "interest", "subject"] },
-  { ids: ["achievement-evidence"], keywords: ["upload", "evidence", "achievement", "portfolio"] },
-  { ids: ["career-match-table", "opportunities-map"], keywords: ["career", "fit", "match", "opportunity"] },
 ];
 
 function OnboardingScreen({
@@ -343,30 +338,6 @@ function WorkspaceScreen({
   profile: StudentProfile;
   selectedCharacter: CharacterOption;
 }) {
-  const [command, setCommand] = useState("");
-  const [visibleModuleIds, setVisibleModuleIds] = useState<string[]>([
-    "profile-summary",
-  ]);
-  const revealTimeoutsRef = useRef<number[]>([]);
-  const startWorkspaceEntry = useCharacterStore(
-    (state) => state.startWorkspaceEntry,
-  );
-  const setCharacterState = useCharacterStore((state) => state.setState);
-  const workspaceModules = useMemo(
-    () => getMockWorkspaceModules(profile),
-    [profile],
-  );
-  const moduleById = useMemo(
-    () =>
-      workspaceModules.reduce<Record<string, WorkspaceModule>>((record, module) => {
-        record[module.id] = module;
-        return record;
-      }, {}),
-    [workspaceModules],
-  );
-  const visibleModules = visibleModuleIds
-    .map((moduleId) => moduleById[moduleId])
-    .filter(Boolean);
   const selectedGuide = useMemo(
     () =>
       characterOptions.find((option) => option.id === selectedCharacter) ??
@@ -374,119 +345,21 @@ function WorkspaceScreen({
     [selectedCharacter],
   );
 
-  useEffect(() => {
-    startWorkspaceEntry();
-  }, [startWorkspaceEntry]);
-
-  useEffect(
-    () => () => {
-      revealTimeoutsRef.current.forEach((timeoutId) =>
-        window.clearTimeout(timeoutId),
-      );
-    },
-    [],
-  );
-
-  const revealModules = (moduleIds: string[]) => {
-    setCharacterState("thinking");
-
-    moduleIds.forEach((moduleId, index) => {
-      const timeoutId = window.setTimeout(() => {
-        setVisibleModuleIds((current) =>
-          current.includes(moduleId) ? current : [...current, moduleId],
-        );
-
-        if (index === moduleIds.length - 1) {
-          setCharacterState("speaking");
-        }
-      }, index * 260);
-
-      revealTimeoutsRef.current.push(timeoutId);
-    });
-  };
-
-  const handleCommand = () => {
-    const normalizedCommand = command.trim().toLowerCase();
-
-    if (!normalizedCommand) {
-      revealModules(["profile-summary"]);
-      return;
-    }
-
-    const trigger = workspaceModuleTriggers.find((item) =>
-      item.keywords.some((keyword) => normalizedCommand.includes(keyword)),
-    );
-
-    if (trigger) {
-      revealModules(trigger.ids);
-      setCommand("");
-      return;
-    }
-
-    revealModules(["interest-bars", "career-match-table"]);
-    setCommand("");
-  };
-
   return (
     <main className="workspace-screen" aria-label="Ayna AI workspace">
       <div className="workspace-stage">
-        <div className="workspace-brand">
-          <span>Ayna AI</span>
-          <strong>{selectedGuide.name} workspace</strong>
-        </div>
-
-        <section className="workspace-module-area" aria-label="Student modules">
-          <div className="workspace-companion-dock">
-            <DesktopCharacter />
-          </div>
-
-          <div className="module-grid">
-            {visibleModules.map((module) => (
-              <WorkspaceModuleRenderer key={module.id} module={module} />
-            ))}
-          </div>
-        </section>
-
-        <div className="workspace-actions" aria-label="Module actions">
-          <nav>
-            <button onClick={() => revealModules(["interest-bars", "roadmap-timeline"])} type="button">
-              Show my roadmap
-            </button>
-            <button onClick={() => revealModules(["career-match-table", "opportunities-map"])} type="button">
-              Career matches
-            </button>
-            <button onClick={() => revealModules(["achievement-evidence"])} type="button">
-              Evidence ideas
-            </button>
-          </nav>
-        </div>
-
-        <form
-          className="workspace-command"
-          onSubmit={(event) => {
-            event.preventDefault();
-            handleCommand();
-          }}
-        >
-          <input
-            aria-label="Ask Ayna"
-            onChange={(event) => setCommand(event.target.value)}
-            placeholder="Try: show my roadmap, career matches, evidence ideas"
-            value={command}
-          />
-          <button type="submit">Send</button>
-        </form>
-
-        <p className="workspace-hint">
-          Modules appear progressively as Lyra opens the next part of your workspace.
-        </p>
+        <WorkspaceCanvas
+          guideName={selectedGuide.name}
+          profile={profile}
+          selectedCharacterId={selectedCharacter}
+        />
       </div>
     </main>
   );
 }
 
 function App() {
-  const [phase, setPhase] = useState<AppPhase>("onboarding");
+  const [phase, setPhase] = useState<AppPhase>("landing");
   const [selectedCharacter, setSelectedCharacter] =
     useState<CharacterOption>("ayna");
   const [profile, setProfile] = useState<StudentProfile>({
@@ -498,6 +371,10 @@ function App() {
     challenge: "",
     hasAchievements: "Maybe, I am not sure what counts",
   });
+
+  if (phase === "landing") {
+    return <LandingHero onStart={() => setPhase("onboarding")} />;
+  }
 
   if (phase === "onboarding") {
     return (
