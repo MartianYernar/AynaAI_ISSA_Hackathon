@@ -1,5 +1,9 @@
 import { Minus, X } from "lucide-react";
 import type { NodeProps } from "@xyflow/react";
+import { CareerIdentityNode } from "./CareerIdentityNode";
+import { InterestSignalNode } from "./InterestSignalNode";
+import { RoadmapMapPreviewNode } from "./RoadmapMapPreviewNode";
+import { RoadmapOrbitalNode } from "./RoadmapOrbitalNode";
 import type { WorkspaceNodeSchema } from "./types";
 import type { ReactNode } from "react";
 
@@ -91,6 +95,30 @@ export function WorkspaceNodeRenderer(props: RendererProps) {
     );
   }
 
+  if (workspaceNode.type === "career-identity") {
+    return (
+      <NodeChrome {...props}>
+        <CareerIdentityNode data={nodeData} />
+      </NodeChrome>
+    );
+  }
+
+  if (workspaceNode.type === "interest-signal") {
+    return (
+      <NodeChrome {...props}>
+        <InterestSignalNode data={nodeData} />
+      </NodeChrome>
+    );
+  }
+
+  if (workspaceNode.type === "roadmap-map-preview") {
+    return (
+      <NodeChrome {...props}>
+        <RoadmapMapPreviewNode data={nodeData} />
+      </NodeChrome>
+    );
+  }
+
   if (workspaceNode.type === "career-table") {
     return (
       <NodeChrome {...props}>
@@ -130,48 +158,7 @@ export function WorkspaceNodeRenderer(props: RendererProps) {
   if (workspaceNode.type === "roadmap-map") {
     return (
       <NodeChrome {...props}>
-        <div className="v2-roadmap-map">
-          <svg aria-hidden="true" viewBox="0 0 100 100">
-            {nodeData.links.map((link: { source: string; target: string }) => {
-              const source = nodeData.steps.find(
-                (step: { id: string }) => step.id === link.source,
-              );
-              const target = nodeData.steps.find(
-                (step: { id: string }) => step.id === link.target,
-              );
-
-              return source && target ? (
-                <line
-                  key={`${link.source}-${link.target}`}
-                  x1={source.x}
-                  x2={target.x}
-                  y1={source.y}
-                  y2={target.y}
-                />
-              ) : null;
-            })}
-          </svg>
-          {nodeData.steps.map(
-            (step: {
-              id: string;
-              label: string;
-              stage: string;
-              status: "locked" | "current" | "next" | "completed";
-              x: number;
-              y: number;
-            }) => (
-              <section
-                className={`roadmap-map-step is-${step.status}`}
-                key={step.id}
-                style={{ left: `${step.x}%`, top: `${step.y}%` }}
-              >
-                <span>{step.stage}</span>
-                <strong>{step.label}</strong>
-                <b>{step.status}</b>
-              </section>
-            ),
-          )}
-        </div>
+        <RoadmapOrbitalNode data={nodeData} />
       </NodeChrome>
     );
   }

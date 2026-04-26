@@ -70,6 +70,12 @@ button {
     linear-gradient(135deg, #fffefa 0%, #f1edf8 48%, #e8f3ec 100%);
 }
 
+.landing-shader-layer {
+  z-index: 0;
+  opacity: 0.38;
+  mix-blend-mode: multiply;
+}
+
 .landing-hero-content {
   position: relative;
   z-index: 2;
@@ -636,7 +642,7 @@ button {
 }
 
 .workspace-v2 {
-  --character-size: 236px;
+  --character-size: 310px;
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -765,6 +771,25 @@ button {
   background:
     linear-gradient(135deg, rgba(85, 165, 131, 0.16), transparent 46%),
     rgba(255, 254, 250, 0.95);
+}
+
+.node-career-identity {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(85, 165, 131, 0.16), transparent 34%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(245, 242, 250, 0.88)),
+    rgba(255, 254, 250, 0.96);
+}
+
+.node-interest-signal {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(123, 101, 199, 0.16), transparent 34%),
+    rgba(255, 254, 250, 0.95);
+}
+
+.node-roadmap-map-preview {
+  background:
+    linear-gradient(90deg, rgba(85, 165, 131, 0.1), transparent 36%),
+    rgba(255, 254, 250, 0.96);
 }
 
 .v2-profile-body {
@@ -967,6 +992,62 @@ button {
   opacity: 0.68;
 }
 
+.v2-roadmap-orbital {
+  position: relative;
+  height: 282px;
+  overflow: hidden;
+  border: 1px solid rgba(62, 52, 105, 0.1);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(123, 101, 199, 0.2), transparent 52%),
+    radial-gradient(circle at 20% 24%, rgba(85, 165, 131, 0.14), transparent 34%),
+    #12101d;
+}
+
+.v2-roadmap-orbital > div {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+}
+
+.v2-roadmap-orbital .max-w-4xl {
+  max-width: 100%;
+}
+
+.v2-roadmap-orbital .w-96 {
+  width: 15rem;
+  height: 15rem;
+}
+
+.v2-roadmap-orbital .w-16 {
+  width: 3.4rem;
+  height: 3.4rem;
+}
+
+.v2-roadmap-orbital .w-20 {
+  width: 4.4rem;
+  height: 4.4rem;
+}
+
+.v2-roadmap-orbital .w-24 {
+  width: 5.2rem;
+  height: 5.2rem;
+}
+
+.v2-roadmap-orbital .w-8 {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.v2-roadmap-orbital .top-12 {
+  top: 2.65rem;
+}
+
+.v2-roadmap-orbital .top-20 {
+  top: 4.75rem;
+}
+
 .v2-roadmap {
   display: grid;
   gap: 12px;
@@ -999,6 +1080,296 @@ button {
   border-radius: 999px;
   background: #55a583;
   content: "";
+}
+
+.career-identity-node,
+.interest-signal-node,
+.roadmap-map-preview-node {
+  color: #2c283a;
+  font-family: var(--font-body);
+}
+
+.career-identity-node {
+  display: grid;
+  gap: 14px;
+}
+
+.career-identity-statement {
+  display: grid;
+  gap: 7px;
+  padding: 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(135deg, rgba(85, 165, 131, 0.16), transparent 58%),
+    rgba(255, 255, 255, 0.72);
+}
+
+.career-identity-statement span,
+.interest-signal-node header span,
+.roadmap-map-preview-node header span,
+.interest-signal-focus span {
+  color: #55a583;
+  font-size: 11px;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.career-identity-statement strong,
+.interest-signal-node header strong,
+.roadmap-map-preview-node header strong {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.career-identity-grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 12px;
+}
+
+.career-identity-grid h3 {
+  margin: 0 0 8px;
+  color: #5d586b;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.career-signal-list,
+.career-gap-list {
+  display: grid;
+  gap: 8px;
+}
+
+.career-signal-list article,
+.career-gap-list article {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid rgba(62, 52, 105, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.career-signal-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.career-signal-list strong,
+.career-gap-list strong {
+  color: #312b43;
+  font-size: 13px;
+}
+
+.career-signal-list b {
+  color: #55a583;
+  font-size: 12px;
+}
+
+.career-signal-list p,
+.career-gap-list p,
+.roadmap-preview-step p {
+  margin: 0;
+  color: #625d71;
+  font-size: 12px;
+  line-height: 1.38;
+}
+
+.interest-signal-node {
+  display: grid;
+  gap: 13px;
+}
+
+.interest-signal-node header,
+.roadmap-map-preview-node header {
+  display: grid;
+  gap: 6px;
+}
+
+.interest-signal-focus {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 16% 20%, rgba(123, 101, 199, 0.18), transparent 40%),
+    rgba(255, 255, 255, 0.66);
+}
+
+.interest-signal-focus b {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 22px;
+  background: #55a583;
+  color: #ffffff;
+  font-size: 20px;
+  box-shadow: 0 16px 32px rgba(85, 165, 131, 0.2);
+}
+
+.interest-signal-focus div {
+  display: grid;
+  gap: 4px;
+}
+
+.interest-signal-focus strong {
+  color: #302a42;
+  font-size: 18px;
+}
+
+.interest-signal-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.interest-signal-bars section {
+  display: grid;
+  gap: 6px;
+}
+
+.interest-signal-bars div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #3a344d;
+  font-size: 13px;
+}
+
+.interest-signal-bars i {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(123, 101, 199, 0.16);
+}
+
+.interest-signal-bars em {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #55a583, #7b65c7);
+}
+
+.interest-signal-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.interest-signal-chips span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(123, 101, 199, 0.1);
+  color: #5c4e8f;
+  font-size: 11px;
+  font-weight: 760;
+}
+
+.roadmap-map-preview-node {
+  display: grid;
+  gap: 12px;
+}
+
+.roadmap-preview-path {
+  position: relative;
+  height: 214px;
+  overflow: hidden;
+  border: 1px solid rgba(62, 52, 105, 0.1);
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(62, 52, 105, 0.055) 1px, transparent 1px),
+    linear-gradient(rgba(62, 52, 105, 0.055) 1px, transparent 1px),
+    rgba(247, 246, 241, 0.72);
+  background-size: 28px 28px;
+}
+
+.roadmap-preview-path svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.roadmap-preview-path path {
+  fill: none;
+  stroke: rgba(85, 165, 131, 0.54);
+  stroke-dasharray: 8 7;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.roadmap-preview-step {
+  position: absolute;
+  display: grid;
+  width: 112px;
+  min-height: 72px;
+  gap: 4px;
+  padding: 9px;
+  border: 1px solid rgba(62, 52, 105, 0.12);
+  border-radius: 15px;
+  background: rgba(255, 254, 250, 0.94);
+  box-shadow: 0 14px 34px rgba(38, 35, 49, 0.1);
+  transform: translate(-50%, -50%);
+}
+
+.roadmap-preview-step span {
+  width: fit-content;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(123, 101, 199, 0.1);
+  color: #5c4e8f;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.roadmap-preview-step.is-completed span {
+  background: rgba(85, 165, 131, 0.14);
+  color: #3f775f;
+}
+
+.roadmap-preview-step.is-current {
+  border-color: rgba(85, 165, 131, 0.48);
+  box-shadow:
+    0 16px 38px rgba(38, 35, 49, 0.12),
+    0 0 0 4px rgba(85, 165, 131, 0.1);
+}
+
+.roadmap-preview-step.is-locked {
+  opacity: 0.64;
+}
+
+.roadmap-preview-step.step-1 {
+  left: 8%;
+  top: 70%;
+}
+
+.roadmap-preview-step.step-2 {
+  left: 28%;
+  top: 30%;
+}
+
+.roadmap-preview-step.step-3 {
+  left: 50%;
+  top: 62%;
+}
+
+.roadmap-preview-step.step-4 {
+  left: 72%;
+  top: 32%;
+}
+
+.roadmap-preview-step.step-5 {
+  left: 90%;
+  top: 62%;
 }
 
 .node-achievement-evidence {
@@ -1080,18 +1451,36 @@ button {
 
 .workspace-v2-message {
   position: absolute;
-  left: 28px;
-  bottom: 92px;
+  left: 40px;
+  bottom: 124px;
   z-index: 24;
-  max-width: 360px;
-  padding: 12px 14px;
-  border: 1px solid rgba(85, 165, 131, 0.2);
-  border-radius: 16px;
-  background: rgba(255, 254, 250, 0.94);
-  color: #4f4a5e;
-  font-size: 13px;
+  max-width: 430px;
+  padding: 16px 18px;
+  border: 1px solid rgba(85, 165, 131, 0.28);
+  border-radius: 22px 22px 22px 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(248, 246, 241, 0.92)),
+    #fffefa;
+  color: #443e52;
+  font-size: 15px;
+  font-weight: 650;
   line-height: 1.45;
-  box-shadow: 0 18px 42px rgba(38, 35, 49, 0.12);
+  box-shadow:
+    0 24px 64px rgba(38, 35, 49, 0.16),
+    0 0 0 4px rgba(85, 165, 131, 0.06);
+}
+
+.workspace-v2-message::before {
+  position: absolute;
+  bottom: 16px;
+  left: -9px;
+  width: 18px;
+  height: 18px;
+  border-bottom: 1px solid rgba(85, 165, 131, 0.28);
+  border-left: 1px solid rgba(85, 165, 131, 0.28);
+  background: #fffefa;
+  content: "";
+  transform: rotate(45deg);
 }
 
 .workspace-v2-command {
@@ -2093,7 +2482,7 @@ button {
   }
 
   .workspace-v2 {
-    --character-size: 188px;
+    --character-size: 230px;
   }
 
   .workspace-v2-topbar {

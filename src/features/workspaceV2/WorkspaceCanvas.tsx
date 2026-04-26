@@ -12,6 +12,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { DesktopCharacter } from "../../components/avatar";
+import { ShiningText } from "../../components/ui/shining-text";
 import { useCharacterStore } from "../../store";
 import type { StudentProfile } from "../../types";
 import { WorkspaceNodeRenderer } from "./WorkspaceNodeRenderer";
@@ -60,6 +61,7 @@ export function WorkspaceCanvas({
 }: WorkspaceCanvasProps) {
   const [command, setCommand] = useState("");
   const [assistantMessage, setAssistantMessage] = useState("");
+  const [isPreparingResponse, setIsPreparingResponse] = useState(false);
   const [conversationHistory, setConversationHistory] = useState<
     WorkspaceCommandRequest["conversationHistory"]
   >([]);
@@ -245,24 +247,30 @@ export function WorkspaceCanvas({
 
   const submitWorkspaceCommand = useCallback(
     async (commandText: string) => {
+      setIsPreparingResponse(true);
+      setAssistantMessage("Lyra is generating a workspace response...");
       setCharacterState("thinking");
 
-      const response = await sendWorkspaceCommand({
-        commandText,
-        studentProfile: profile,
-        existingModules,
-        selectedCharacterId,
-        conversationHistory,
-      });
+      try {
+        const response = await sendWorkspaceCommand({
+          commandText,
+          studentProfile: profile,
+          existingModules,
+          selectedCharacterId,
+          conversationHistory,
+        });
 
-      setAssistantMessage(response.assistantMessage);
-      setCharacterState(response.assistantState);
-      setConversationHistory((current) => [
-        ...(current ?? []),
-        { role: "user", content: commandText },
-        { role: "assistant", content: response.assistantMessage },
-      ]);
-      processEvents(response.events);
+        setAssistantMessage(response.assistantMessage);
+        setCharacterState(response.assistantState);
+        setConversationHistory((current) => [
+          ...(current ?? []),
+          { role: "user", content: commandText },
+          { role: "assistant", content: response.assistantMessage },
+        ]);
+        processEvents(response.events);
+      } finally {
+        setIsPreparingResponse(false);
+      }
     },
     [
       conversationHistory,
@@ -281,7 +289,7 @@ export function WorkspaceCanvas({
 
     startedRef.current = true;
     startWorkspaceEntry();
-    setCharacterPosition(132, Math.max(420, window.innerHeight - 104));
+    setCharacterPosition(168, Math.max(500, window.innerHeight - 72));
     void submitWorkspaceCommand("__start__");
 
     return clearEventTimeouts;
@@ -304,17 +312,6 @@ export function WorkspaceCanvas({
           <span>Ayna AI</span>
           <strong>{guideName} canvas</strong>
         </div>
-        <nav aria-label="Workspace commands">
-          <button onClick={() => void submitWorkspaceCommand("roadmap")} type="button">
-            Roadmap
-          </button>
-          <button onClick={() => void submitWorkspaceCommand("careers")} type="button">
-            Careers
-          </button>
-          <button onClick={() => void submitWorkspaceCommand("achievements")} type="button">
-            Achievements
-          </button>
-        </nav>
       </div>
 
       <ReactFlow
@@ -342,7 +339,11 @@ export function WorkspaceCanvas({
 
       {assistantMessage ? (
         <div className="workspace-v2-message" role="status">
-          {assistantMessage}
+          {isPreparingResponse ? (
+            <ShiningText text={assistantMessage} />
+          ) : (
+            assistantMessage
+          )}
         </div>
       ) : null}
 

@@ -3,6 +3,9 @@ import type { CharacterState } from "../../types";
 
 export type WorkspaceNodeType =
   | "profile-summary"
+  | "career-identity"
+  | "interest-signal"
+  | "roadmap-map-preview"
   | "interest-chart"
   | "career-table"
   | "roadmap-timeline"

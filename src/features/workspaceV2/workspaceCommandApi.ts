@@ -58,6 +58,125 @@ function createProfileModule(request: WorkspaceCommandRequest): WorkspaceModule 
   };
 }
 
+function createCareerIdentityModule(
+  request: WorkspaceCommandRequest,
+): WorkspaceModule {
+  const profile = request.studentProfile;
+  const primaryInterest = parseInterests(profile.interests)[0];
+
+  return {
+    id: "career-identity",
+    type: "career-identity",
+    title: "Career identity",
+    position: { x: 84, y: 116 },
+    size: { width: 460, height: 360 },
+    state: "visible",
+    data: {
+      statement: `${profile.name || "You"} learns best by connecting ${primaryInterest.toLowerCase()} with visible projects and practical outcomes.`,
+      strengthSignals: [
+        {
+          label: primaryInterest,
+          evidence: "Shows up as a repeated interest and can anchor the first roadmap.",
+          score: 88,
+        },
+        {
+          label: "Reflection",
+          evidence:
+            profile.challenge || "A clear challenge gives Lyra something useful to coach.",
+          score: 76,
+        },
+        {
+          label: "Achievement awareness",
+          evidence: profile.hasAchievements,
+          score: profile.hasAchievements.toLowerCase().startsWith("yes")
+            ? 82
+            : 58,
+        },
+      ],
+      growthGaps: [
+        {
+          label: "Evidence depth",
+          nextStep: "Turn one activity into proof with role, output, and result.",
+        },
+        {
+          label: "Opportunity fit",
+          nextStep: "Compare nearby study paths against strengths and English level.",
+        },
+      ],
+    },
+  };
+}
+
+function createInterestSignalModule(
+  request: WorkspaceCommandRequest,
+): WorkspaceModule {
+  const interests = parseInterests(request.studentProfile.interests);
+
+  return {
+    id: "interest-signal",
+    type: "interest-signal",
+    title: "Interest signal",
+    position: { x: 606, y: 92 },
+    size: { width: 360, height: 330 },
+    state: "visible",
+    data: {
+      headline: "Your strongest learning pulls",
+      signals: interests.map((label, index) => ({
+        category:
+          index === 0 ? "primary" : index === 1 ? "supporting" : "emerging",
+        label,
+        score: Math.max(54, 91 - index * 12),
+      })),
+    },
+  };
+}
+
+function createRoadmapMapPreviewModule(): WorkspaceModule {
+  return {
+    id: "roadmap-map-preview",
+    type: "roadmap-map-preview",
+    title: "Path preview",
+    position: { x: 248, y: 520 },
+    size: { width: 620, height: 350 },
+    state: "visible",
+    data: {
+      title: "First path from signal to opportunity",
+      steps: [
+        {
+          id: "start",
+          description: "Confirm direction",
+          label: "Start",
+          status: "completed",
+        },
+        {
+          id: "skills",
+          description: "Choose skills to practice",
+          label: "Skills",
+          status: "current",
+        },
+        {
+          id: "project",
+          description: "Build one proof project",
+          label: "Project",
+          status: "next",
+        },
+        {
+          id: "portfolio",
+          description: "Package evidence",
+          label: "Portfolio",
+          status: "locked",
+        },
+        {
+          id: "opportunity",
+          description: "Match programs",
+          label: "Opportunity",
+          status: "locked",
+        },
+      ],
+    },
+  };
+}
+
 function createInterestChartModule(request: WorkspaceCommandRequest): WorkspaceModule {
   const interests = parseInterests(request.studentProfile.interests);
 
@@ -195,17 +314,49 @@ function mockSendWorkspaceCommand(
 
   if (command === "__start__") {
     return {
-      assistantMessage: "I opened your starting profile signal.",
+      assistantMessage:
+        "I built your starting canvas: identity, interest signal, and a first path preview. We can expand any part when you are ready.",
       assistantState: "speaking",
       events: [
+        { id: "start-speaking", type: "set_assistant_state", state: "speaking" },
         {
-          id: "start-profile",
+          id: "start-foundation-modules",
           type: "spawn_modules",
-          modules: hasModule(request, "profile-summary")
-            ? []
-            : [createProfileModule(request)],
+          modules: [
+            hasModule(request, "career-identity")
+              ? null
+              : createCareerIdentityModule(request),
+            hasModule(request, "interest-signal")
+              ? null
+              : createInterestSignalModule(request),
+            hasModule(request, "roadmap-map-preview")
+              ? null
+              : createRoadmapMapPreviewModule(),
+          ].filter(Boolean) as WorkspaceModule[],
         },
-        { id: "start-focus-profile", type: "focus_module", moduleId: "profile-summary" },
+        {
+          id: "start-connect-foundation",
+          type: "connect_modules",
+          edges: [
+            {
+              id: "identity-to-interest-signal",
+              source: "career-identity",
+              target: "interest-signal",
+              label: "signals",
+            },
+            {
+              id: "identity-to-path-preview",
+              source: "career-identity",
+              target: "roadmap-map-preview",
+              label: "starts",
+            },
+          ],
+        },
+        {
+          id: "start-focus-identity",
+          type: "focus_module",
+          moduleId: "career-identity",
+        },
       ],
     };
   }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DesktopCharacter } from "./components/avatar";
+import { ShiningText } from "./components/ui/shining-text";
 import { LandingHero } from "./features/landing";
 import { WorkspaceCanvas } from "./features/workspaceV2";
 import { useCharacterStore } from "./store";
@@ -227,9 +228,13 @@ function OnboardingScreen({
           <div className="guide-message">
             <span>Lyra is guiding setup</span>
             <p>
-              {stepIndex === 0
-                ? "Hi, I am Lyra. I will ask one thing at a time so your roadmap starts with the right context."
-                : "Answer in your own words. Short answers are enough, and you can refine everything later."}
+              {isThinking ? (
+                <ShiningText text="Lyra is preparing your next step..." />
+              ) : stepIndex === 0 ? (
+                "Hi, I am Lyra. I will ask one thing at a time so your roadmap starts with the right context."
+              ) : (
+                "Answer in your own words. Short answers are enough, and you can refine everything later."
+              )}
             </p>
           </div>
         </aside>
